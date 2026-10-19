@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { TOOLS } from "@/lib/tools/registry";
 import { BLOG_CATEGORIES } from "@/lib/config/blog";
+import { getContent } from "@/lib/content";
 import { Logo } from "./Logo";
 
 const FEATURED = ["tattoo-generator", "tattoo-font-generator", "tattoo-name-generator", "tattoo-placement-guide", "tattoo-size-calculator", "tattoo-stencil-maker"];
 
-export function SiteFooter() {
+export async function SiteFooter() {
+  const c = await getContent("site");
   const featured = FEATURED.map((s) => TOOLS.find((t) => t.slug === s)).filter((t) => t !== undefined);
   return (
     <footer className="bg-ink text-bone/80">
@@ -13,7 +15,7 @@ export function SiteFooter() {
         <div>
           <Logo light />
           <p className="mt-4 max-w-xs text-sm leading-relaxed">
-            Explore tattoo ideas, lettering and placement before you sit down with a professional artist. Designs are concepts and inspiration, not a substitute for a consultation.
+            {c.footerBlurb}
           </p>
         </div>
         <FooterCol title="Popular tools">
@@ -58,7 +60,7 @@ export function SiteFooter() {
       </div>
       <div className="border-t border-bone/10">
         <div className="container-x flex flex-col items-start justify-between gap-3 py-6 text-[13px] sm:flex-row sm:items-center">
-          <p>© {new Date().getFullYear()} TattooGenerator.com. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} {c.copyright}</p>
           <nav className="flex flex-wrap gap-x-5 gap-y-1" aria-label="Legal">
             <Link href="/privacy-policy" className="hover:text-bone">
               Privacy

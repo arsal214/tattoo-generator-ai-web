@@ -6,6 +6,7 @@ import { PostCard } from "@/components/blog/PostCard";
 import { CtaBand, FaqList, SectionHeading, Steps, ToolCard } from "@/components/marketing/Sections";
 import { PlanCards } from "@/components/pricing/PlanCards";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { getContent } from "@/lib/content";
 import { listPosts } from "@/lib/blog/queries";
 import { STYLES } from "@/lib/config/generation";
 import { buildMetadata, faqLd } from "@/lib/seo";
@@ -15,31 +16,15 @@ import { TOOL_CATEGORIES } from "@/lib/tools/types";
 
 export const revalidate = 3600;
 
-export const metadata: Metadata = buildMetadata({
-  title: "Free Tattoo Generator – Create Tattoo Designs Online",
-  description: SITE.description,
-  path: "/",
-});
-
-const STEPS = [
-  { title: "Describe your idea", body: "Write it the way you'd tell a friend — \"a small fine-line moth on the wrist\" is plenty. No prompt-writing skills needed." },
-  { title: "Pick style, placement and size", body: "Choose from 14 tattoo styles and 13 body areas. We shape the design to suit both the look and the spot." },
-  { title: "Generate and refine", body: "Get a clean, tattoo-ready concept in seconds. Try another style, tweak the prompt, or generate again." },
-  { title: "Save, download, take it to your artist", body: "Keep favorites in your account and download the artwork as reference for a professional consultation." },
-];
-
-const FAQ = [
-  { q: "What is a tattoo generator?", a: "A tattoo generator is an online tool that turns a written idea into tattoo design concepts. Ours uses AI to create tattoo-style artwork based on your description, chosen style, placement, size and color." },
-  { q: "Is the tattoo generator free?", a: "You can start for free. Every new account gets 20 credits with no payment details, and each generation uses 1 credit. If you need more, the Creator and Pro plans add more credits." },
-  { q: "Can I generate custom tattoo ideas?", a: "Yes. Describe anything from a single symbol to a detailed scene. The generator produces original artwork for your description rather than picking from a catalog of stock designs." },
-  { q: "Can I choose a tattoo style?", a: "Yes. There are 14 styles, including minimalist, fine line, traditional, neo traditional, blackwork, geometric, tribal, gothic, watercolor, realism, Japanese, old school, sketch and dotwork." },
-  { q: "Can I download my tattoo design?", a: "Yes. Every design is saved to your account, and you can download the image from the result screen or from My Designs." },
-  { q: "Can I use the design as inspiration for a tattoo artist?", a: "That's exactly what it's for. Treat generated designs as concepts and reference material, then work with a professional tattoo artist who can adapt the idea to your body, skin and their own style." },
-];
+export async function generateMetadata(): Promise<Metadata> {
+  const c = await getContent("home");
+  return buildMetadata({ title: c.metaTitle, description: c.metaDescription, path: "/" });
+}
 
 export default async function HomePage() {
   const featured = ["tattoo-font-generator", "tattoo-name-generator", "tattoo-placement-guide", "tattoo-size-calculator"].map(getTool).filter((t) => t !== undefined);
   const { items: posts } = await listPosts({ limit: 3 });
+  const c = await getContent("home");
 
   return (
     <main>
@@ -61,7 +46,7 @@ export default async function HomePage() {
               { "@type": "Offer", name: "Pro", price: "50", priceCurrency: "USD" },
             ],
           },
-          faqLd(FAQ),
+          faqLd(c.faq),
         ]}
       />
 
@@ -69,18 +54,18 @@ export default async function HomePage() {
       <section className="bg-ink bg-dots pb-24 pt-10 text-bone sm:pb-28 sm:pt-14">
         <div className="container-x">
           <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-bone/20 px-3 py-1 text-[13px] text-bone/80">
-            <span className="h-2 w-2 rounded-full bg-accent" aria-hidden /> 20 free credits when you sign up
+            <span className="h-2 w-2 rounded-full bg-accent" aria-hidden /> {c.badge}
           </p>
-          <h1 className="max-w-4xl text-4xl font-semibold leading-[1.05] sm:text-6xl">Free Tattoo Generator – Create Tattoo Designs Online</h1>
+          <h1 className="max-w-4xl text-4xl font-semibold leading-[1.05] sm:text-6xl">{c.heroTitle}</h1>
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-bone/80 sm:text-xl">
-            Turn your ideas into unique tattoo designs with AI. Describe your idea, choose a style, and generate tattoo concepts you can save, customize, and download.
+            {c.heroBody}
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <a href="#generator" className="btn btn-primary btn-lg">
-              Generate Your Tattoo
+              {c.primaryCta}
             </a>
             <Link href="/tattoo-idea-generator" className="btn btn-outline-light btn-lg">
-              Explore Tattoo Ideas
+              {c.secondaryCta}
             </Link>
           </div>
         </div>
@@ -94,17 +79,17 @@ export default async function HomePage() {
 
       {/* ---------- how it works ---------- */}
       <section className="section container-x" aria-labelledby="how">
-        <SectionHeading id="how" eyebrow="How it works" title="From rough idea to tattoo-ready concept">
-          A tattoo design has to work on skin, not just on a screen. The generator is tuned for clean composition, strong linework and a clear silhouette.
+        <SectionHeading id="how" eyebrow={c.howEyebrow} title={c.howTitle}>
+          {c.howBody}
         </SectionHeading>
-        <Steps steps={STEPS} />
+        <Steps steps={c.steps} />
       </section>
 
       {/* ---------- styles ---------- */}
       <section className="bg-bone/60">
         <div className="section container-x" aria-labelledby="styles">
-          <SectionHeading id="styles" eyebrow="Tattoo styles" title="14 styles, each with its own rules">
-            Style changes everything: line weight, shading, how much detail survives at small sizes. Pick the look, and the generator handles the rest.
+          <SectionHeading id="styles" eyebrow={c.stylesEyebrow} title={c.stylesTitle}>
+            {c.stylesBody}
           </SectionHeading>
           <ul className="grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-5">
             {STYLES.map((s) => {
@@ -132,8 +117,8 @@ export default async function HomePage() {
 
       {/* ---------- tools ---------- */}
       <section className="section container-x" aria-labelledby="tools">
-        <SectionHeading id="tools" eyebrow="More than a generator" title="Everything for planning a tattoo">
-          Lettering, names, dates, symbols, sizing and placement — the details that decide whether a tattoo works long after the excitement of choosing it.
+        <SectionHeading id="tools" eyebrow={c.toolsEyebrow} title={c.toolsTitle}>
+          {c.toolsBody}
         </SectionHeading>
         <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {featured.map((t) => (
@@ -162,8 +147,8 @@ export default async function HomePage() {
       {/* ---------- pricing ---------- */}
       <section className="bg-bone/60">
         <div className="section container-x" aria-labelledby="pricing">
-          <SectionHeading id="pricing" eyebrow="Pricing" title="Start free. Pay only if you need more.">
-            1 credit = 1 AI tattoo generation. The lettering, symbol and planning tools never use credits.
+          <SectionHeading id="pricing" eyebrow={c.pricingEyebrow} title={c.pricingTitle}>
+            {c.pricingBody}
           </SectionHeading>
           <PlanCards from="home" />
         </div>
@@ -173,7 +158,7 @@ export default async function HomePage() {
       {posts.length > 0 && (
         <section className="section container-x" aria-labelledby="reading">
           <div className="flex flex-wrap items-end justify-between gap-3">
-            <SectionHeading id="reading" eyebrow="From the blog" title="Guides and ideas" className="mb-0" />
+            <SectionHeading id="reading" eyebrow={c.blogEyebrow} title={c.blogTitle} className="mb-0" />
             <Link href="/blog" className="btn btn-outline btn-sm">
               All articles
             </Link>
@@ -188,13 +173,13 @@ export default async function HomePage() {
 
       {/* ---------- faq ---------- */}
       <section className="section container-x" aria-labelledby="faq">
-        <SectionHeading id="faq" eyebrow="FAQ" title="Tattoo generator questions" />
+        <SectionHeading id="faq" eyebrow="FAQ" title={c.faqTitle} />
         <div className="max-w-3xl">
-          <FaqList faq={FAQ} />
+          <FaqList faq={c.faq} />
         </div>
       </section>
 
-      <CtaBand heading="Your next tattoo starts with an idea" body="Claim 20 free credits and see your concept on screen before you ever book a consultation." primary={{ href: "/signup", label: "Get 20 free credits" }} secondary={{ href: "/tattoo-font-generator", label: "Try the font generator" }} />
+      <CtaBand heading={c.ctaHeading} body={c.ctaBody} primary={{ href: "/signup", label: c.ctaPrimary }} secondary={{ href: "/tattoo-font-generator", label: c.ctaSecondary }} />
     </main>
   );
 }

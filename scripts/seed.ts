@@ -1,12 +1,15 @@
 /**
- * Seeds reference data: plans, blog posts, and DB indexes.
+ * Seeds reference data: plans, blog posts, page content, the admin user (admin@gmail.com / 12345678) and DB indexes.
  *   npm run seed            # upsert plans (keeps admin edits) + blog posts (refreshes content)
  *   npm run seed -- --reset-plans   # also overwrite plan price/credits/features from src/lib/config/plans.ts
  *
  * Styles, placements, tool categories and blog categories live in typed config modules
  * (src/lib/config/*, src/lib/tools/*) shared by the UI, validation and prompt engine — they need no DB seeding.
  */
+import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
+import { CONTENT_DEFAULTS } from "../src/lib/content/defaults";
+import { PageContent } from "../src/lib/db/models/PageContent";
 import { PLANS } from "../src/lib/config/plans";
 import { BlogPost } from "../src/lib/db/models/BlogPost";
 import { Plan } from "../src/lib/db/models/Plan";
@@ -52,8 +55,20 @@ async function main() {
   }
   console.log(`blog posts: ${posts.length} upserted`);
 
+  // Page content: only inserted when missing, so admin edits survive re-seeding.
+  for (const [key, data] of Object.entries(CONTENT_DEFAULTS)) await PageContent.updateOne({ key }, { $setOnInsert: { key, data } }, { upsert: true });
+  console.log(`page content: ${Object.keys(CONTENT_DEFAULTS).length} ensured`);
+
+  // Admin user. The password is only set on first insert; change it from the dashboard in production.
+  await User.updateOne(
+    { email: "admin@gmail.com" },
+    { $set: { role: "admin", emailVerified: true }, $setOnInsert: { name: "Admin", passwordHash: await bcrypt.hash("12345678", 12), credits: 1000, plan: "pro" } },
+    { upsert: true },
+  );
+  console.log("admin user: admin@gmail.com ensured");
+
   // Indexes (unique keys back the idempotency guarantees, so make sure they exist).
-  for (const m of [User, Generation, CreditTransaction, Plan, Payment, Transaction, Favorite, BlogPost, PasswordResetToken, RateLimit, AnalyticsEvent]) await m.createIndexes();
+  for (const m of [PageContent, User, Generation, CreditTransaction, Plan, Payment, Transaction, Favorite, BlogPost, PasswordResetToken, RateLimit, AnalyticsEvent]) await m.createIndexes();
   console.log("indexes ensured");
 }
 
