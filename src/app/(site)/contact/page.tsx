@@ -1,4 +1,5 @@
 import ContactForm from "@/components/ContactForm";
+import { Rich } from "@/components/marketing/Sections";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { getContent, md } from "@/lib/content";
 import { breadcrumbLd, buildMetadata } from "@/lib/seo";
@@ -15,7 +16,7 @@ export default async function ContactPage() {
       <JsonLd data={breadcrumbLd([{ name: "Home", path: "/" }, { name: "Contact", path: "/contact" }])} />
       <div className="container-x max-w-3xl">
         <h1 className="text-4xl font-semibold sm:text-5xl">{c.heading}</h1>
-        <p className="mt-4 text-lg leading-8 text-muted">{c.intro}</p>
+        <Rich html={c.intro} className="mt-4 text-lg leading-8 text-muted" />
         <div className="mt-8">
           <ContactForm />
         </div>

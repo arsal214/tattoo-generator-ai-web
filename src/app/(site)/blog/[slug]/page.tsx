@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { marked } from "marked";
+import { richHtml } from "@/lib/rich";
 import { PostCard } from "@/components/blog/PostCard";
 import { Breadcrumbs, CtaBand, ToolCard } from "@/components/marketing/Sections";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -36,7 +36,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   const [related] = await Promise.all([relatedPosts(post.slug, post.category)]);
   const category = BLOG_CATEGORIES.find((c) => c.slug === post.category);
   const tools = (post.tools ?? []).map(getTool).filter((t) => t !== undefined);
-  const html = marked.parse(post.content, { async: false }) as string; // content is authored by admins/seed only
+  const html = richHtml(post.content); // content is authored by admins/seed only
 
   return (
     <main>

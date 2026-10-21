@@ -32,13 +32,6 @@ export function ToolPageShell({ tool, related, posts }: Props) {
         <div className="container-x">
           <Breadcrumbs dark items={[{ name: "Home", href: "/" }, { name: tool.name }]} />
           <h1 className="mt-5 max-w-3xl text-4xl font-semibold leading-[1.08] sm:text-5xl">{tool.h1}</h1>
-          <div className="mt-5 max-w-2xl space-y-3 text-lg leading-relaxed text-bone/80">
-            {tool.intro.map((p, i) => (
-              <p key={i}>
-                <Inline md={p} className="[&_a]:text-bone [&_a]:underline [&_a]:underline-offset-4" />
-              </p>
-            ))}
-          </div>
         </div>
       </header>
 

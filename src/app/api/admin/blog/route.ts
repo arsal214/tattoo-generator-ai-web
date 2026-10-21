@@ -9,7 +9,7 @@ export const POST = api(
     const body = await parseBody(req, blogInput);
     if (await BlogPost.exists({ slug: body.slug })) throw err.validation("That slug is already used.");
     const post = await BlogPost.create({ ...body, publishedAt: body.status === "published" ? new Date() : undefined });
-    revalidatePath("/blog");
+    revalidatePath("/", "layout");
     return { id: String(post._id) };
   },
   { admin: true },

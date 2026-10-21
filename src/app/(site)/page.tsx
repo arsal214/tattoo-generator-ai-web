@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { TattooGenerator } from "@/components/generator/TattooGenerator";
 import { PostCard } from "@/components/blog/PostCard";
-import { CtaBand, FaqList, SectionHeading, Steps, ToolCard } from "@/components/marketing/Sections";
+import { CtaBand, FaqList, Rich, SectionHeading, Steps, ToolCard } from "@/components/marketing/Sections";
 import { PlanCards } from "@/components/pricing/PlanCards";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { getContent } from "@/lib/content";
@@ -57,9 +57,7 @@ export default async function HomePage() {
             <span className="h-2 w-2 rounded-full bg-accent" aria-hidden /> {c.badge}
           </p>
           <h1 className="max-w-4xl text-4xl font-semibold leading-[1.05] sm:text-6xl">{c.heroTitle}</h1>
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-bone/80 sm:text-xl">
-            {c.heroBody}
-          </p>
+          <Rich html={c.heroBody} className="mt-5 max-w-2xl text-lg leading-relaxed text-bone/80 sm:text-xl" />
           <div className="mt-7 flex flex-wrap gap-3">
             <a href="#generator" className="btn btn-primary btn-lg">
               {c.primaryCta}

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { marked } from "marked";
+import { richHtml } from "@/lib/rich";
 import type { ReactNode } from "react";
 import type { ToolDef, TitledText } from "@/lib/tools/types";
 import { cn } from "@/lib/utils";
@@ -10,6 +11,11 @@ export function Inline({ md, className }: { md: string; className?: string }) {
   return <span className={className} dangerouslySetInnerHTML={{ __html: marked.parseInline(md, { async: false }) as string }} />;
 }
 
+/** Block-level admin copy (HTML or markdown) in a div, so it can hold paragraphs and lists. */
+export function Rich({ html, className }: { html: string; className?: string }) {
+  return <div className={cn("rich", className)} dangerouslySetInnerHTML={{ __html: richHtml(html) }} />;
+}
+
 export function SectionHeading({ id, eyebrow, title, children, className }: { id?: string; eyebrow?: string; title: string; children?: ReactNode; className?: string }) {
   return (
     <div className={cn("mb-8 max-w-2xl", className)}>
@@ -17,7 +23,7 @@ export function SectionHeading({ id, eyebrow, title, children, className }: { id
       <h2 id={id} className="text-3xl font-semibold sm:text-4xl">
         {title}
       </h2>
-      {children && <p className="mt-3 text-lg text-muted">{children}</p>}
+      {children && <div className="mt-3 text-lg text-muted">{typeof children === "string" ? <Rich html={children} /> : children}</div>}
     </div>
   );
 }
@@ -29,7 +35,7 @@ export function Steps({ steps }: { steps: TitledText[] }) {
         <li key={s.title} className="card p-5">
           <span className="flex h-9 w-9 items-center justify-center rounded-full bg-ink font-display text-lg font-semibold text-bone">{i + 1}</span>
           <h3 className="mt-4 text-lg font-semibold">{s.title}</h3>
-          <p className="mt-1.5 text-[15px] leading-relaxed text-ink/75">{s.body}</p>
+          <Rich html={s.body} className="mt-1.5 text-[15px] leading-relaxed text-ink/75" />
         </li>
       ))}
     </ol>
@@ -58,7 +64,7 @@ export function FaqList({ faq }: { faq: { q: string; a: string }[] }) {
             <h3 className="text-base font-semibold sm:text-[17px]">{f.q}</h3>
             <ChevronDown className="shrink-0 transition group-open:rotate-180" size={20} aria-hidden />
           </summary>
-          <p className="pb-4 pr-8 leading-relaxed text-ink/80">{f.a}</p>
+          <Rich html={f.a} className="pb-4 pr-8 leading-relaxed text-ink/80" />
         </details>
       ))}
     </div>
@@ -84,7 +90,7 @@ export function CtaBand({ heading, body, primary, secondary }: { heading: string
     <section className="bg-ink bg-dots text-bone">
       <div className="container-x py-14 text-center sm:py-20">
         <h2 className="mx-auto max-w-2xl text-3xl font-semibold sm:text-4xl">{heading}</h2>
-        <p className="mx-auto mt-3 max-w-xl text-lg text-bone/75">{body}</p>
+        <Rich html={body} className="mx-auto mt-3 max-w-xl text-lg text-bone/75" />
         <div className="mt-7 flex flex-wrap justify-center gap-3">
           <Link href={primary.href} className="btn btn-primary btn-lg">
             {primary.label}

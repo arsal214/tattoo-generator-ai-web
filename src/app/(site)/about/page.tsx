@@ -1,3 +1,4 @@
+import { Rich } from "@/components/marketing/Sections";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { getContent, md } from "@/lib/content";
 import { breadcrumbLd, buildMetadata } from "@/lib/seo";
@@ -14,7 +15,7 @@ export default async function AboutPage() {
       <JsonLd data={breadcrumbLd([{ name: "Home", path: "/" }, { name: "About", path: "/about" }])} />
       <div className="container-x max-w-3xl">
         <h1 className="text-4xl font-semibold sm:text-5xl">{c.heading}</h1>
-        <p className="mt-4 text-lg leading-8 text-muted">{c.intro}</p>
+        <Rich html={c.intro} className="mt-4 text-lg leading-8 text-muted" />
         <div className="prose-tg mt-6" dangerouslySetInnerHTML={{ __html: md(c.body) }} />
       </div>
     </main>

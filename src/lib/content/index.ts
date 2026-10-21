@@ -1,6 +1,6 @@
 import "server-only";
 import { cache } from "react";
-import { marked } from "marked";
+import { richHtml } from "../rich";
 import { connectDB } from "../db/connect";
 import { PageContent } from "../db/models/PageContent";
 import { CONTENT_DEFAULTS, type ContentKey } from "./defaults";
@@ -20,4 +20,4 @@ export const getContent = cache(async <K extends ContentKey>(key: K): Promise<(t
 });
 
 /** Admin-authored markdown only (never user input). */
-export const md = (s: string) => marked.parse(s, { async: false }) as string;
+export const md = richHtml;

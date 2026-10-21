@@ -2,6 +2,7 @@ import Link from "next/link";
 import { TOOLS } from "@/lib/tools/registry";
 import { BLOG_CATEGORIES } from "@/lib/config/blog";
 import { getContent } from "@/lib/content";
+import { Rich } from "@/components/marketing/Sections";
 import { Logo } from "./Logo";
 
 const FEATURED = ["tattoo-generator", "tattoo-font-generator", "tattoo-name-generator", "tattoo-placement-guide", "tattoo-size-calculator", "tattoo-stencil-maker"];
@@ -14,9 +15,7 @@ export async function SiteFooter() {
       <div className="container-x grid gap-10 py-14 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div>
           <Logo light />
-          <p className="mt-4 max-w-xs text-sm leading-relaxed">
-            {c.footerBlurb}
-          </p>
+          <Rich html={c.footerBlurb} className="mt-4 max-w-xs text-sm leading-relaxed" />
         </div>
         <FooterCol title="Popular tools">
           {featured.map((t) => (

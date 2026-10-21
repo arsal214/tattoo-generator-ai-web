@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { Breadcrumbs, CtaBand, FaqList, Inline, SectionHeading } from "@/components/marketing/Sections";
+import { Breadcrumbs, CtaBand, FaqList, Rich, SectionHeading } from "@/components/marketing/Sections";
 import { CONFIG_PLANS, PlanCards } from "@/components/pricing/PlanCards";
 import { getContent } from "@/lib/content";
 import { breadcrumbLd, buildMetadata, faqLd } from "@/lib/seo";
@@ -40,7 +40,7 @@ export default async function PricingPage() {
         <div className="container-x">
           <Breadcrumbs dark items={[{ name: "Home", href: "/" }, { name: "Pricing" }]} />
           <h1 className="mt-5 max-w-3xl text-4xl font-semibold leading-[1.08] sm:text-5xl">{c.heroTitle}</h1>
-          <p className="mt-5 max-w-2xl text-lg text-bone/80"><Inline md={c.heroBody} /></p>
+          <Rich html={c.heroBody} className="mt-5 max-w-2xl text-lg text-bone/80" />
         </div>
       </section>
 

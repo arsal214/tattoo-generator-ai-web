@@ -77,6 +77,11 @@ h1, h2, h3 {
   .prose-tg { @apply max-w-none text-[17px] leading-8 text-ink/90; }
   .prose-tg h2 { @apply mt-10 mb-3 text-2xl font-semibold text-ink sm:text-3xl; }
   .prose-tg h3 { @apply mt-8 mb-2 text-xl font-semibold text-ink; }
+  .rich > p + p { @apply mt-3; }
+  .rich > ul { @apply my-2 list-disc space-y-1 pl-6; }
+  .rich > ol { @apply my-2 list-decimal space-y-1 pl-6; }
+  .rich a { @apply underline underline-offset-4; }
+  .rich h2, .rich h3 { @apply font-semibold; }
   .prose-tg p { @apply my-4; }
   .prose-tg ul { @apply my-4 list-disc space-y-2 pl-6; }
   .prose-tg ol { @apply my-4 list-decimal space-y-2 pl-6; }

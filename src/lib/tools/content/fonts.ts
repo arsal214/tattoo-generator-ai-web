@@ -269,10 +269,7 @@ export const fontTools: ToolDef[] = [
     metaDescription:
       "Preview names, words and phrases in sharp gothic tattoo lettering. Test spacing and size, compare with Old English, and download a PNG for your tattoo artist.",
     h1: "Gothic Tattoo Generator: Sharp, Dramatic Lettering Previews",
-    intro: [
-      "Gothic tattoo lettering is all edges: angular strokes, sharp terminals and a slightly medieval attitude. This gothic tattoo generator opens with a high-impact style so you can see how your word or name looks when the letters feel carved instead of written.",
-      "It suits moody, heavy or defiant text, but drama comes with a legibility cost. The preview lets you test how easily your wording reads before you commit to a look that could take a second glance to decode.",
-    ],
+    intro: [],
     steps: [
       { title: "Type your wording", body: "Enter a word or short phrase. Gothic styles are usually strongest with one to three words." },
       { title: "Check the sharp letters", body: "Look for letters that share similar angular shapes, since some pairs, such as n and u or e and c, can blur together." },
