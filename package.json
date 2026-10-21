@@ -15,8 +15,7 @@
   "dependencies": {
     "@google/genai": "^2.24.0",
     "@tiptap/pm": "^3.32.0",
-    "@tiptap/react": "^3.32.0",
-    "@tiptap/starter-kit": "^3.32.0",
+    "@webbycrown/react-advanced-richtext-editor": "^1.0.3",
     "bcryptjs": "^3.0.3",
     "jose": "^6.2.12",
     "lucide-react": "^1.48.0",
