@@ -41,6 +41,16 @@ export async function SiteFooter() {
           ))}
           <FooterLink href="/about">About</FooterLink>
           <FooterLink href="/contact">Contact</FooterLink>
+          <li>
+            <a
+              href="https://play.google.com/store/apps/details?id=com.aitattoogenerator.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-8 items-center hover:text-bone"
+            >
+              Get the Android app
+            </a>
+          </li>
         </FooterCol>
       </div>
       <div className="border-t border-bone/10">
